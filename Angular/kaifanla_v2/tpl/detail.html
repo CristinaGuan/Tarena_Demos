@@ -1,0 +1,15 @@
+<div id="detail" data-role="page" ng-controller="detailCtrl">
+  <div data-role="header" data-position="fixed">
+    <h1>菜品详情</h1>
+    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-btn-icon-notext ui-icon-back"></a>
+    <a href="../index.html" class="ui-btn ui-corner-all ui-btn-icon-notext ui-icon-home"></a>
+  </div>
+  <div class="ui-content">
+    {{dish}}
+    <hr>
+    <a href="order.html?did={{dish.did}}">我要下单</a>
+  </div>
+  <div data-role="footer" data-position="fixed">
+    <h2></h2>
+  </div>
+</div>

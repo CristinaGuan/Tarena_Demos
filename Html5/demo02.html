@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>函数</title>
+  <meta charset="utf-8" />
+  <!--引入chart.js文件-->
+  <script src="./js/Chart.js"></script> 
+ </head>
+ <body>
+	<!--定义<canvas>元素-->
+	<canvas id="canvas" width="300px" height="300px"></canvas>
+	<script>
+		//获取<canvas>元素
+		var canvas=document.getElementById("canvas");
+		//创建画布对象
+		var context=canvas.getContext("2d");
+		//通过画布对象，创建chart对象
+		var chart=new Chart(context);
+		var data = [
+				{
+					value: 1,
+					label: "red",
+					color:"#F7464A",
+					highlight: "#FF5A5E"
+				},
+				{
+					value: 2,
+					label: "Two",
+					color: "#46BFBD",
+					highlight: "#5AD3D1"
+
+				},
+				{
+					value: 3,
+					label: "Three",
+					color: "#949FB1",
+					highlight: "#A8B3C5"
+				},
+				{
+					value: 4,
+					label: "Four",
+					color: "#4D5360",
+					highlight: "#616774"
+				},
+				{
+					value: 5,
+					label: "Five",
+					color: "#46BFBD",
+					highlight: "#5AD3D1"
+				}
+
+			];
+		chart.Doughnut(data);
+	</script>
+ </body>
+</html>

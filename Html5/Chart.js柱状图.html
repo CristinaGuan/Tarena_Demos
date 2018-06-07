@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>Chart.js绘制柱状图</title>
+  <meta charset="utf-8" />
+  <script src="./js/Chart.js"></script>
+ </head>
+
+ <body>
+  <canvas id="canvas" height="450" width="600"></canvas>
+  <script>
+	var canvas = document.getElementById("canvas");
+	var context = canvas.getContext("2d");
+	/*
+	 * whether or not the chart should be responsive and resize when the browser does.
+	 */
+	Chart.defaults.global.responsive = true;
+	var chart = new Chart(context);
+	var data = {
+		labels : ['一月','二月','三月','四月','五月','六月'],
+		datasets : [
+			{
+				// 填充颜色
+				fillColor : "rgba(220,220,220,0.5)",
+				// 描边颜色
+				strokeColor : "rgba(220,220,220,0.8)",
+				// 鼠标悬停时填充颜色
+				highlightFill: "rgba(220,220,220,0.75)",
+				// 鼠标悬停时描边颜色
+				highlightStroke: "rgba(220,220,220,1)",
+				// 设置柱状图数据内容
+				data : [100,200,50,300,500,400]
+			},
+			{
+				fillColor : "rgba(151,187,205,0.5)",
+				strokeColor : "rgba(151,187,205,0.8)",
+				highlightFill : "rgba(151,187,205,0.75)",
+				highlightStroke : "rgba(151,187,205,1)",
+				data : [300,200,100,50,500,300]
+			}
+		]
+	}
+	chart.Bar(data);
+  </script>
+ </body>
+</html>

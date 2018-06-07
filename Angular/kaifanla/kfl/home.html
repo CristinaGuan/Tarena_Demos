@@ -1,0 +1,28 @@
+<div class="container" >
+    <div class="navbar-form">
+      <form class="form-group has-feedback">
+        <input type="text" class="form-control" placeholder="搜索菜品名称和原料...">
+        <span class="glyphicon glyphicon-search form-control-feedback"></span>
+      </form>
+    </div>
+
+    <div class="media" ng-repeat="d in datalist">
+      <div class="media-left media-middle">
+        <a ng-href="#/dishDetail?did={{d.did}}">
+          <img class="media-object" ng-src="img/{{d.img_sm}}"/>
+        </a>
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading">{{d.name}}</h4>
+          <p>主要食材:{{d.material}}</p>
+          <hr>
+          <span class="d_price">{{d.price | currency:'¥'}}</span>
+        </div>
+    </div>
+  <br>
+   <button type="button" class="btn btn-primary btn-block" ng-disabled="isLoading" ng-click="load()">
+     <span ng-hide="isLoading">加载更多</span>
+     <img ng-show="isLoading" class="loading" ng-src="img/loading.gif" alt="">
+   </button>
+
+</div>

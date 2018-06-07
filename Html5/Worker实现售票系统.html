@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>Worker实现售票系统</title>
+  <meta charset="utf-8" />
+  <style>
+	div {
+		width : 150px;
+		height : 150px;
+		border : solid 1px black;
+		float : left;
+		margin-right : 10px;
+	}
+	.hasTicket {
+		width : 150px;
+		height : 150px;
+		border : solid 1px black;
+		float : left;
+		margin-right : 10px;
+		background : green;
+	}
+	.noTicket {
+		width : 150px;
+		height : 150px;
+		border : solid 1px black;
+		float : left;
+		margin-right : 10px;
+		background : red;
+	}
+  </style>
+ </head>
+
+ <body align="center">
+  <h1>售票系统</h1>
+  <div id="win0">售票窗口 1</div>
+  <div id="win1">售票窗口 2</div>
+  <div id="win2">售票窗口 3</div>
+  <div id="win3">售票窗口 4</div>
+  <div id="win4">售票窗口 5</div>
+  <br>
+  <input type="button" id="btn" value="抢票">
+  <script>
+	var workers = [];
+	// 1. 获取页面button按钮
+	var btn = document.getElementById("btn");
+	// 2. 为button按钮绑定click事件
+	btn.onclick = function(){
+		/*
+		 * 创建5个worker对象
+		 * * 检测当前浏览器是否支持worker
+		 *   * 支持 - 创建worker对象
+		 */
+		if(typeof(Worker) !== "undefined"){
+			for(var i=0;i<5;i++){
+				var worker = new Worker("./js/getticket.js");
+				worker.onmessage = getmessage;
+				workers.push(worker);
+			}
+		}
+	}
+	function getmessage(event){
+		// event事件对象 - target属性(绑定该事件的对象)
+		var w = event.target;
+		// 从数组中获取当前worker对象的角标
+		var index = workers.indexOf(w);
+		// 根据角标,获取对应的窗口
+		var win = document.getElementById("win"+index);
+		// event.data - 0或1
+		if(event.data == 1){//有票
+			win.className = "hasTicket";
+		}else{//无票
+			win.className = "noTicket";
+		}
+	}
+  </script>
+ </body>
+</html>

@@ -1,0 +1,37 @@
+body {
+  font-family: 'SimHei';
+}
+.img-responsive {
+  display: block;
+  max-width: 100%;
+}
+.alert {
+  border: 1px solid transparent;
+  padding: 6px;
+}
+.alert-danger {
+  border-color: #d9534f;
+  background-color: #fdf7f7;
+  color: #c9302c;
+}
+#start > div {
+  position: absolute;
+  top: 50%;
+  margin-top: -8em;
+}
+#start .logo {
+  font-size: 4em;
+  margin: 0;
+  text-align: center;
+  color: #999;
+}
+#main .dish-img-sm {
+  top: 23px;
+  left: 10px;
+}
+#main .price {
+  font-weight: bold;
+  color: #a33;
+  border-top: 1px solid #ddd;
+  padding-top: .5em;
+}

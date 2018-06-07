@@ -1,0 +1,171 @@
+<!doctype html>
+<html>
+ <head>
+  <meta charset="UTF-8">
+  <title>用户中心</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="scripts/jquery-1.11.3.js"></script>
+  <!--
+	  将自定义JS文件引入在jQuery文件后
+	  在自定义JS文件中可以使用jQuery的API
+  -->
+  <script src="scripts/orderList.js"></script>
+  <script src="scripts/recordPaint.js"></script>
+  <script src="scripts/runLottey.js"></script>
+
+ </head>
+ <script>
+	 $(function(){
+		 // 1. 点击"我的订单"菜单
+		 $("#orderLink").click(function(){
+			 // a. 操作左侧菜单的样式
+			 $(this).addClass("selected");
+			 $("#recordLink").removeClass("selected");
+			 $("#lotteryLink").removeClass("selected");
+			 // b. 操作右侧内容区的显示与隐藏
+			 $("#orderContent").show();
+			 $("#recordContent").hide();
+			 $("#lotteryContent").hide();
+		 });
+		 // 2. 点击"消费记录"菜单
+		 $("#recordLink").click(function(){
+			 // a. 操作左侧菜单的样式
+			 $(this).addClass("selected");
+			 $("#orderLink").removeClass("selected");
+			 $("#lotteryLink").removeClass("selected");
+			 // b. 操作右侧内容区的显示与隐藏
+			 $("#orderContent").hide();
+			 $("#recordContent").show();
+			 $("#lotteryContent").hide();
+		 });
+		 // 3. 点击"幸运抽奖"菜单
+		 $("#lotteryLink").click(function(){
+			 // a. 操作左侧菜单的样式
+			 $(this).addClass("selected");
+			 $("#orderLink").removeClass("selected");
+			 $("#recordLink").removeClass("selected");
+			 // b. 操作右侧内容区的显示与隐藏
+			 $("#orderContent").hide();
+			 $("#recordContent").hide();
+			 $("#lotteryContent").show();
+		 });
+		 /*
+		    1. 订单查询
+		    页面加载完毕时,向服务器端发送请求,得到当前用户的所有订单信息
+		    * 使用Ajax方式提交异步请求
+		      * 原生Ajax的实现
+		      * jQuery中的Ajax方法 - 选择$.get()方法,数据格式为JSON
+		  */
+		 $.get("server.php",function(data){
+			/*
+			  封装initOrderList()函数
+			  * 作用 - 解析服务器端响应的JSON格式数据
+			           将解析后的数据写入到<table>表格中
+			  * 该函数接收 2 个参数
+			    * Elem - 表示页面中表格
+			    * data - 服务器端响应的数据内容
+			 */
+			 initOrderList($("#orderList"),data);
+		 },"json");
+
+		 /*
+		   2. 消费记录
+		     * 定义绘制折线图的关键数据(12个月的消费记录-金额)
+		     * 封装函数专门用于绘制折线图
+		       recordPaint(Elem,Data)方法
+		       * Elem - 表示<canvas>元素
+		       * Data - 表示关键数据
+		  */
+		 var datas = [1200,2000,3000,500,200,800,1800,2200,2600,1000,600,300];
+		 recordPaint($("#recordCvs")[0],datas);
+
+		 // 3. 幸运抽奖
+		 /*
+		 var lottey = new runLottey($("#lotteryCvs")[0]);
+		 $("#btnLottery").click(function(){
+			 // 开始抽奖
+			 lottey.start();
+		 });
+		 */
+		 var start = runLottey($("#lotteryCvs")[0]);
+		 $("#btnLottery").click(function(){
+			 start();
+		 });
+	 });
+ </script>
+ <body>
+	<!-- 导航区 -->
+	<div id="nav">
+		<div class="w">
+			<div class="logo">
+				<a href="http://www.jd.com" id="e1"></a>
+				<a href="http://www.jd.com" id="e2">我的京东</a>
+				<a href="http://www.jd.com" id="e3">返回京东首页</a>
+			</div>
+		</div>
+	</div>
+
+	<!-- 内容区容器 -->
+	<div id="container">
+		<div class="w">
+			<!-- 左侧列表 -->
+			<dl id="playlist">
+				<dt>我的京东</dt>
+				<dd><a id="orderLink" href="#" class="selected">我的订单</a></dd>
+				<dd><a id="recordLink" href="#">消费记录</a></dd>
+				<dd><a id="lotteryLink" href="#">幸运抽奖</a></dd>
+			</dl>
+			<!-- 右侧内容区 -->
+			<div id="content">
+				<!-- 订单列表 -->
+				<div id="orderContent">
+					<table id="orderList" width="100%">
+						<tr>
+							<th width="50%">订单信息</th>
+							<th width="10%">收货人</th>
+							<th width="10%">订单金额</th>
+							<th width="10%">
+								<select id="orderTime">
+									<option value="1">最近三个月</option>
+									<option value="2">今年内</option>
+									<option value="3">2014年</option>
+									<option value="4">2013年</option>
+									<option value="5">2012年</option>
+									<option value="6">2012年以前</option>
+								</select>
+							</th>
+							<th width="10%">
+								<select id="orderStatus">
+									<option value="1">全部状态</option>
+									<option value="2">等待付款</option>
+									<option value="3">等待自提</option>
+									<option value="4">等待收货</option>
+									<option value="5">已完成</option>
+									<option value="6">已取消</option>
+								</select>
+							</th>
+							<th width="10%">操作</th>
+						</tr>
+					</table>
+				</div>
+				<div id="recordContent">
+					<canvas id="recordCvs" width="600" height="400">
+						您的浏览器不支持canvas
+					</canvas>
+				</div>
+				<div id="lotteryContent">
+					<canvas id="lotteryCvs" width="500" height="500"></canvas>
+					<button id="btnLottery">开始抽奖</button>
+				</div>
+			</div>		
+		</div>
+	</div>
+
+
+	<!-- 页脚区 -->
+	<div id="foot">
+网络文化经营许可证京网文[2011]0168-061号  Copyright © 2004-2015  京东JD.com 版权所有<br/>
+京东旗下网站：English Site
+    </div>
+ </body>
+</html>

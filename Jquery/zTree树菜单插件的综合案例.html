@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>zTree树菜单插件的综合案例</title>
+  <meta charset="utf-8" />
+  <!-- 1. 引入jQuery文件 -->
+  <script src="scripts/jquery-1.11.3.js"></script>
+  <!-- 2. 引入zTree插件的JS文件 -->
+  <script src="zTree/jquery.ztree.all-3.5.js"></script>
+  <!-- 3. 引入zTree插件的CSS文件 -->
+  <link rel="stylesheet" href="zTree/zTreeStyle/zTreeStyle.css" />
+ </head>
+
+ <body>
+  <table border="0" height="600px" align="left">
+	<tr>
+		<!-- 用于显示树菜单 -->
+		<td width="260px" align="left" valign="top" style="border-right: #999999 1px dashed">
+			<ul id="treeDemo" class="ztree"></ul>
+		</td>
+		<!-- 点击某个菜单显示对应的HTML页面 -->
+		<td width="770px" align="left" valign="top">
+			<iframe id="testIframe" name="testIframe" frameborder="0" scrolling="auto" width="100%"  height="600px" src="a.html"></iframe>
+		</td>
+	</tr>
+  </table>
+  <script>
+	var setting = {
+		/*
+		 * view选项 - 配置树菜单的显示样式
+		 * * dblClickExpand - 当前菜单鼠标双击时是否展开/折叠状态的切换
+		 *   * Boolean值,默认为true,允许切换
+		 * * showLine - 设置是否显示节点之间的连线
+		 *   * Boolean值,默认为true,显示连线
+		 * * selectedMulti - 设置是否允许同时选择多个菜单
+		 *   * Boolean值,默认为true,允许同时选择多个
+		 */
+		view:{
+			dblClickExpand:false,
+			showLine:false,
+			selectedMulti:false
+		},
+		/*
+		 * callback选项 - 用于配置树菜单对应事件(函数)
+		 * * beforeClick - 鼠标点击之前的回调函数
+		 *   * 根据该函数的返回值,决定是否允许点击操作
+		 *   * 函数function(treeId,treeNode,clickFlag){}
+		 *     * treeId - 树菜单容器(元素)的id属性值
+		 *     * treeNode - 当前被鼠标单击的树菜单
+		 *     * clickFlag - 
+		 */
+		callback:{
+			beforeClick : function(treeId,treeNode){
+				var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+				// 通过isParent判断当前树菜单是否为父菜单
+				if(treeNode.isParent){// 父菜单
+					zTree.expandNode(treeNode);
+					return false;
+				}else{// 子菜单
+					// 修改<iframe>元素的src属性值
+					$("#testIframe").attr("src",treeNode.file);
+					return true;
+				}
+			}
+		}
+	};
+	var znodes = [
+		{name:"一级菜单1",open:true,
+		 children:[
+			// znodes并没有提供file选项(自定义)
+			{name:"二级菜单11",file:"a.html"},
+			{name:"二级菜单12",file:"b.html"},
+			{name:"二级菜单13",file:"c.html"}
+		 ]
+		}
+	];
+	$.fn.zTree.init($("#treeDemo"),setting,znodes);
+  </script>
+ </body>
+</html>

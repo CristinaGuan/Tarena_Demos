@@ -1,0 +1,46 @@
+@danger: #d9534f;
+
+body {
+  font-family: 'SimHei';
+}
+
+.img-responsive {
+  display: block;
+  max-width: 100%;
+}
+.alert {
+  border: 1px solid transparent;
+  padding: 6px;
+}
+.alert-danger {
+  border-color: #d9534f;
+  background-color: lighten(@danger, 40%);
+  color: darken(@danger, 10%);
+}
+
+#start {
+  >div {
+    position: absolute;
+    top: 50%;
+    margin-top: -8em;
+  }
+  .logo {
+    font-size: 4em;
+    margin: 0;
+    text-align: center;
+    color: #999;
+  }
+}
+
+#main {
+  .dish-img-sm {
+    top: 23px;
+    left: 10px;
+  }
+  .price {
+    font-weight: bold;
+    color: #a33;
+    border-top: 1px solid #ddd;
+    padding-top: .5em;
+  }
+}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>函数</title>
+  <meta charset="utf-8" />
+ </head>
+ <body>
+	<canvas id="canvas" width="500px" height="500px"></canvas>
+	<script>
+	/*
+		var canvas=document.getElementById("canvas");
+		var context=canvas.getContext('2d');
+		var grd = context.createLinearGradient(0,250,500,250);
+		grd.addColorStop(0,"red");
+		grd.addColorStop(0.5,"yellow");
+		grd.addColorStop(1,"green");
+		context.fillStyle=grd;
+		context.fillRect(0,0,canvas.width,canvas.height);
+	*/
+		var canvas=document.getElementById("canvas");
+		var context=canvas.getContext('2d');
+		var grd=context.createRadialGradient(0,0,250,500,500,250);
+		grd.addColorStop(0,"red");
+		grd.addColorStop(0.5,"green");
+		grd.addColorStop(1,"yellow");
+		context.fillStyle=grd;
+		context.fillRect(0,0,500,500);
+	</script>
+ </body>
+</html>

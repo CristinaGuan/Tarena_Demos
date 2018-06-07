@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="kaifanla">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <title>开饭啦</title>
+  <style>
+  </style>
+</head>
+<body>
+<div ng-view=""></div>
+
+<script src="js/jquery-1.11.3.js"></script>
+<script src="js/angular.js"></script>
+<script src="js/angular-route.js"></script>
+<script>
+  angular.module('kaifanla', ['ng', 'ngRoute']).
+  controller('mainCtrl', function ($scope, $http, $location) {
+    $scope.jumpToDetail = function (did) {
+      $location.path('/detail/' + did);
+    }
+  }).
+  controller('detailCtrl', function ($scope, $http, $routeParams) {
+    console.log('路由参数的内容如下：');
+    console.log($routeParams);
+    $scope.rp = $routeParams;
+
+    $http.get('data/dish_listbydid.php?did=' + $routeParams.did).
+    success(function (data) {
+      $scope.dish = data;
+    })
+  }).
+  controller('orderCtrl', function ($scope, $http, $routeParams) {
+    $scope.order = {did: $routeParams.did};
+    $scope.order.user_name = '旭旭';
+    $scope.order.sex = '1';
+    $scope.order.phone = '13501234567';
+    $scope.order.addr = '万寿路123号';
+
+    $scope.submitOrder = function () {
+      /*$http.get('data/order_add.php?user_name='+$scope.user_name+'&phone='+$scope.phone+'&sex='+$scope.sex+'&addr='+$scope.addr+'&did='+$routeParams.did).
+       success(function(data){
+       console.log(data);
+       });*/
+
+
+      /*var emp = {ename:'Tom',age:30,addr:'万寿路'};
+       var str = jQuery.param(emp);
+       console.log(str);*/
+
+      var str = jQuery.param($scope.order);
+      //console.log(str);
+      $http.post('data/order_add.php', str).
+      success(function (data) {
+        console.log('接收到服务器返回的响应数据：')
+        console.log(data);
+      });
+    }
+  }).
+  config(function ($routeProvider) {
+    $routeProvider.
+    when('/main', {
+      templateUrl: 'tpl/main.html',
+      controller: 'mainCtrl'
+    }).
+    when('/detail/:did', {
+      templateUrl: 'tpl/detail.html',
+      controller: 'detailCtrl'
+    }).
+    when('/order/:did', {
+      templateUrl: 'tpl/order.html',
+      controller: 'orderCtrl'
+    })
+  }).
+  run(function($http){
+    //配置默认的HTTPPOST请求的头部
+    $http.defaults.headers.post = {'Content-Type':'application/x-www-form-urlencoded'}
+  })
+</script>
+</body>
+</html>

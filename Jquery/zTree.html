@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>zTree插件一</title>
+  <meta charset="utf-8" />
+  <!-- 1. 引入jQuery文件 -->
+  <script src="scripts/jquery-1.11.3.js"></script>
+  <!-- 2. 引入zTree插件的JS文件 -->
+  <script src="zTree/jquery.ztree.all-3.5.js"></script>
+  <!-- 3. 引入zTree插件的CSS文件 -->
+  <link rel="stylesheet" href="zTree/zTreeStyle/zTreeStyle.css" />
+ </head>
+
+ <body>
+  <!-- 
+	4. 在HTML页面定义树菜单的容器(元素)
+	  * 容器使用<ul>元素
+	    * id属性 - 标识
+		* class属性 - 样式
+		  class="ztree"
+	  * 注意
+	    * 并没有定义<li>元素
+  -->
+  <ul id="ztreeDemo" class="ztree"></ul>
+  <script>
+	var setting = {};
+	var znodes = [
+		// 一个节点一个对象
+		{
+			name : "一级菜单1",
+			children : [
+				{
+					name : "二级菜单11"
+				},
+				{
+					name : "二级菜单12"
+				},
+				{
+					name : "二级菜单13"
+				}
+			]
+		},
+		{
+			name : "一级菜单2"
+		},
+		{
+			name : "一级菜单3"
+		}
+	];
+	/*
+	 * $.fn.zTree.init(obj,setting,znodes)方法
+	 * * 作用 - 创建树菜单的初始化方法(必要)
+	 * * 参数
+	 *   * obj - 设置树菜单显示的元素
+	 *   * setting - 用于配置树菜单
+	 *   * znodes - 用于配置树菜单的内容
+	 */
+	$.fn.zTree.init($("#ztreeDemo"),setting,znodes);
+  </script>
+ </body>
+</html>

@@ -1,0 +1,38 @@
+<div class="container" ng-controller="mainCtrl">
+  <div class="row">
+      <div class="col-md-12">
+        <form class="navbar-form navbar-left">
+          <div class="form-group has-feedback">
+            <input type="text" class="form-control" placeholder="搜索菜品名称和原料">
+            <span class="glyphicon glyphicon-search form-control-feedback" ></span>
+          </div>
+        </form>
+      </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="media" ng-repeat="d in kfl_datalist">
+        <div class="media-left">
+          <a href="#"><img class="media-object" ng-src="img/{{d.img_sm}}" alt=""></a>
+        </div>
+        <div class="media-body">
+          <div class="media-heading">{{d.name}}</div>
+          <p class="material">主要食料：{{d.material}}</p><hr class="hr">
+          <span class="price">{{d.price | currency:'￥'}}元</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--
+      ng-disabled:禁用或其启用输入框/按钮等元素，如果 ng-disabled 中的表达式返回 true 则表单字段将被禁用。
+      ng-show ：指令在表达式为 true 时显示指定的 HTML 元素，否则隐藏指定的 HTML 元素。
+  -->
+  <button ng-click="load()" ng-disabled="isLoading" class="btn btn-primary btn-block">
+  <span ng-hide="isLoading">加载更多</span>
+  <img ng-show="isLoading" class="loading" src="img/loading.gif" alt="">
+</button>
+
+
+
+
+</div>

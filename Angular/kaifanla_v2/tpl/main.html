@@ -1,0 +1,28 @@
+<div id="main" data-role="page" ng-controller="mainCtrl">
+  <div data-role="header" data-position="fixed">
+    <h1>主菜单</h1>
+    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-btn-icon-notext ui-icon-back"></a>
+  </div>
+  <div class="ui-content">
+
+    <input type="search" ng-model="kw" placeholder="请输入菜品名称或原料进行查询...">
+
+    <ul data-role="listview" data-inset="true">
+      <li ng-repeat="d in dishList">
+        <a href="detail.html?did={{d.did}}">
+          <img class="dish-img-sm" ng-src="../img/{{d.img_sm}}" alt="">
+          <h3>{{d.name}}</h3>
+          <p>原料：{{d.material}}</p>
+          <p class="price">{{d.price | currency:'￥'}}</p>
+        </a>
+      </li>
+    </ul>
+
+    <button ng-show="hasMore" data-role="button" ng-click="loadMore()">加载更多</button>
+    <div ng-hide="hasMore" class="alert alert-danger ui-corner-all">已经没有更多数据可加载了！</div>
+
+  </div>
+  <div data-role="footer" data-position="fixed">
+    <h2></h2>
+  </div>
+</div>

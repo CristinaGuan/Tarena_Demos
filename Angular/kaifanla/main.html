@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="kaifanla">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <title>Title</title>
+  <style>
+    .loading {
+      width: 20px;
+      height: 20px;
+    }
+  </style>
+</head>
+<body>
+<div class="container" ng-controller="mainCtrl">
+  <h1>主菜单页面</h1>
+  <input ng-model="kw" class="form-control" type="text" placeholder="请输入菜名/原材料关键字">
+
+  <p>菜品列表</p>
+
+  <p>{{dishList}}</p>
+  
+  <button ng-if="hasMore" class="btn btn-primary btn-block" ng-disabled="isLoading" ng-click="loadMore()">
+    <span ng-hide="isLoading">加载更多</span>
+    <img ng-show="isLoading" class="loading" src="img/loading.gif" alt="">
+  </button>
+
+  <div ng-hide="hasMore" class="alert alert-danger">已经没有更多数据可加载了....</div>
+
+
+  <hr>
+  <a href="#/detail">1号菜品</a>
+  <hr>
+  <a href="#/detail">2号菜品</a>
+  <hr>
+  <a href="#/detail">3号菜品</a>
+
+</div>
+
+<script src="js/angular.js"></script>
+<script>
+  angular.module('kaifanla', []).
+  controller('mainCtrl', function ($scope, $http) {
+      $scope.isLoading = true;    //是否正在加载
+      $scope.hasMore = true;  //服务器还有更多数据可供加载吗？
+    
+      //控制器一创建，就要发起AJAX请求，获取前5条菜品记录
+      $http.get('data/dish_listbypage.php').
+      success(function(data){
+        console.log(data);
+        $scope.dishList = data;
+        $scope.isLoading = false;
+      });
+
+      //单击“加载更多”按钮时触发的函数  (0~4)  (5~9)  (10~14)
+      $scope.loadMore = function(){
+        $scope.isLoading = true;
+        $http.get('data/dish_listbypage.php?start='+$scope.dishList.length).
+        success(function(data){
+          console.log(data);
+          if(data.length<5){
+            $scope.hasMore = false;  //没有更多数据可供加载
+          }
+          //$scope.dishList = data;
+          $scope.dishList = $scope.dishList.concat(data);
+          $scope.isLoading = false;
+        });
+      }
+
+      //监视Model数据kw的改变，一改变则立即向服务器发起AJAX请求
+      $scope.$watch('kw', function(){
+        console.log('Model数据kw发生改变了：'+$scope.kw);
+        if(!$scope.kw){
+          return; //若kw为undefined或空字符串，则退出
+        }
+        $scope.isLoading =  true;
+        $http.get('data/dish_listbykw.php?kw='+$scope.kw).
+        success(function(data){
+          console.log(data);
+          $scope.dishList = data;
+          $scope.isLoading = false;
+        });
+      })
+  })
+</script>
+</body>
+</html>
